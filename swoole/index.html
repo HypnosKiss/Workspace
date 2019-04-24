@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>聊天室</title>
+    <style>
+        body {
+            padding: 0;
+            margin: 0;
+            background: -moz-linear-gradient(-45deg, #183850 0, #183850 25%, #192c46 50%, #22254c 75%, #22254c 100%);
+            background: -webkit-linear-gradient(-45deg, #183850 0, #183850 25%, #192c46 50%, #22254c 75%, #22254c 100%);
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
+
+        .chat-thread {
+            margin: 24px auto 0 auto;
+            padding: 0 20px 0 0;
+            list-style: none;
+            overflow-y: scroll;
+            overflow-x: hidden;
+        }
+
+        .chat-thread li {
+            position: relative;
+            clear: both;
+            display: inline-block;
+            padding: 16px 40px 16px 20px;
+            margin: 0 0 20px 0;
+            font: 16px/20px 'Noto Sans', sans-serif;
+            border-radius: 10px;
+            background-color: rgba(25, 147, 147, 0.2);
+            animation: show-chat-even 0.8s ease-in;
+            float: left;
+            margin-left: 80px;
+            color: #0EC879;
+        }
+
+        /*出现圆球*/
+        .chat-thread li:before {
+            position: absolute;
+            top: 0;
+            width: 50px;
+            height: 50px;
+            border-radius: 50px;
+            content: '';
+            left: -80px;
+            background-image: url(data:image/jpeg;base64,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);
+        }
+
+        /* 设置三角形 */
+        .chat-thread li:after {
+            position: absolute;
+            top: 15px;
+            content: '';
+            width: 0;
+            height: 0;
+            border-top: 15px solid rgba(25, 147, 147, 0.2);
+            border-left: 15px solid transparent;
+            left: -15px;
+        }
+
+        .chat-window {
+            position: fixed;
+            bottom: 80px;
+
+        }
+
+        .chat-window-message {
+            width: 100%;
+            height: 48px;
+            font: 32px/48px 'Noto Sans', sans-serif;
+            background: none;
+            color: #0AD5C1;
+            border: 0;
+            border-bottom: 1px solid rgba(25, 147, 147, 0.2);
+            outline: none;
+        }
+
+        .speak {
+            clear: both;
+            border: 1px solid;
+            margin: 0 auto;
+        }
+
+        @media all and (max-width: 767px) {
+            .chat-thread {
+                width: 90%;
+                height: 260px;
+            }
+
+            .chat-window {
+                left: 5%;
+                width: 90%;
+            }
+        }
+
+        @media all and (min-width: 768px) {
+            .chat-thread {
+                width: 50%;
+                height: 320px;
+            }
+
+            .chat-window {
+                left: 25%;
+                width: 50%;
+            }
+        }
+
+        @keyframes show-chat-even {
+            0% {
+                margin-left: -200px;
+                transform: rotateZ(360deg);
+            }
+            100% {
+                margin-left: 0;
+            }
+        }
+
+        @keyframes show-chat-odd {
+            0% {
+                margin-right: -200px;
+                transform: rotateZ(360deg);
+            }
+            100% {
+                margin-right: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+<!--登录-->
+<style>
+    #main {
+        width: 100%;
+        height: 100%;
+        opacity: 0.9;
+        background: rgba(0, 0, 0, .4);
+        color: #fff;
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 10000;
+        text-align: center;
+        margin: 0 auto;
+    }
+
+    #login {
+        background: #fff;
+        position: relative;
+        top: 40%;
+        width: 260px;
+        color: #000;
+        padding: 20px;
+    }
+</style>
+<div id="main">
+    <div id="login" style="margin: 0 auto;">
+        <table>
+            <tr>
+                <td>用户名:<input type="text" value="张三" name="name"></td>
+            </tr>
+            <tr>
+                <td>密 &nbsp; 码:<input type="password" value="123" name="password"></td>
+            </tr>
+            <tr>
+                <td>
+                    &nbsp;&nbsp;
+                    <input type="submit" id="logins" value="登录" style="background-color:#0CA818;color:#fff">&nbsp;
+                    <input type="submit" value="注册" style="background-color:#ff1c1c;color:#fff">
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div id="convo">
+    <ul class="chat-thread">
+        <!--聊天内容框-->
+    </ul>
+    <!--聊天框-->
+    <div class="chat-window">
+        <input class="chat-window-message" name="chat-window-message"
+               autocomplete="on" placeholder="请输入内容按回车键发送"
+               type="text" value="">
+    </div>
+</div>
+<!--引入jq文件-->
+<script src='http://code.jquery.com/jquery-1.8.0.min.js'></script>
+
+<script type="text/javascript">
+    $('.chat-window').scrollTop($('.chat-window')[0].scrollHeight);
+    //点击登陆
+    $("#logins").click(function () {
+        var name = $("input[name='name']").val();
+        var password = $("input[name='password']").val();
+        if (name && password) {
+            websocket.send(name + "," + password);//发送消息
+        } else {
+            alert('不能为空');
+        }
+    });
+
+    //运行websocket
+    if ("WebSocket" in window) {
+        console.log("您的浏览器支持 WebSocket!");
+        websocket = new WebSocket("ws://120.77.156.0:1025/");//和服务器建立连接
+        //监听服务器状态
+        //连接成功
+        websocket.onopen = function () {
+            //websocket.send('name:lixiang');//发送消息
+        };
+        websocket.onerror = function () {
+            $('.chat-thread').append('<li>连接出错</li>'); //追加
+        };
+        websocket.onclose = function () {
+            $('.chat-thread').append('<li>连接关闭</li>'); //追加
+        };
+        //收到消息（服务器）
+        websocket.onmessage = function (evt) {
+            //写入聊天框
+            var msg = evt.data; //服务器返回的消息
+            if (msg == '登录成功') {
+                $("#main").hide();
+            }
+            $display = $("#main").css('display');
+            if ($display == 'none') {
+                $('.chat-thread').append('<li>' + msg + '</li>'); //追加
+            }
+        };
+    }
+
+    //键按下之后会触发事件 onkeydown
+    $(document).keypress(function (event) {
+        //按下的是指定的键，然后才触发动作
+        if (event.keyCode == 13) { //按下了回车键
+            var speak = $('.chat-window-message').val(); //输入框里的值
+            websocket.send(speak + ",");
+            //$('.chat-thread').append('<li>' + speak + '</li>'); //追加
+            $('.chat-window-message').val(''); //清除内容
+        }
+    });
+</script>
+</body>
+</html>
