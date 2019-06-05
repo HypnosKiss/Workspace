@@ -14,7 +14,7 @@ class Task
 
     protected $beforeFirstYield = TRUE;
 
-    protected $exception = null;
+    protected $exception        = NULL;
 
     public function __construct($taskId, Generator $coroutine)
     {
@@ -35,21 +35,28 @@ class Task
         $this->sendValue = $sendValue;
     }
 
-    public function setException($exception) {
+    public function setException($exception)
+    {
+
         $this->exception = $exception;
     }
- 
-    public function run() {
+
+    public function run()
+    {
+
         if ($this->beforeFirstYield) {
-            $this->beforeFirstYield = false;
+            $this->beforeFirstYield = FALSE;
+
             return $this->coroutine->current();
-        } elseif ($this->exception) {
-            $retval = $this->coroutine->throw($this->exception);
-            $this->exception = null;
+        } else if ($this->exception) {
+            $retval          = $this->coroutine->throw($this->exception);
+            $this->exception = NULL;
+
             return $retval;
         } else {
-            $retval = $this->coroutine->send($this->sendValue);
-            $this->sendValue = null;
+            $retval          = $this->coroutine->send($this->sendValue);
+            $this->sendValue = NULL;
+
             return $retval;
         }
     }
@@ -244,50 +251,68 @@ class SystemCall
     }
 }
 
-
 /**
  * 协程堆栈
+ *
  * @var mixed
  */
-class CoroutineReturnValue {
+class CoroutineReturnValue
+{
+
     protected $value;
- 
-    public function __construct($value) {
+
+    public function __construct($value)
+    {
+
         $this->value = $value;
     }
- 
-    public function getValue() {
+
+    public function getValue()
+    {
+
         return $this->value;
     }
 }
 
 /**
- * 
+ *
  * @var mixed
  */
-class CoSocket {
+class CoSocket
+{
+
     protected $socket;
- 
-    public function __construct($socket) {
+
+    public function __construct($socket)
+    {
+
         $this->socket = $socket;
     }
- 
-    public function accept() {
+
+    public function accept()
+    {
+
         yield waitForRead($this->socket);
         yield retval(new CoSocket(stream_socket_accept($this->socket, 0)));
     }
- 
-    public function read($size) {
+
+    public function read($size)
+    {
+
         yield waitForRead($this->socket);
         yield retval(fread($this->socket, $size));
     }
- 
-    public function write($string) {
+
+    public function write($string)
+    {
+
         yield waitForWrite($this->socket);
         fwrite($this->socket, $string);
     }
- 
-    public function close() {
+
+    public function close()
+    {
+
         @fclose($this->socket);
     }
 }
@@ -400,7 +425,9 @@ function waitForWrite($socket)
     );
 }
 
-function server($port) {
+function server($port)
+{
+
     echo "Starting server at port $port...\n";
 
     $socket = @stream_socket_server("tcp://localhost:$port", $errNo, $errStr);
@@ -408,21 +435,22 @@ function server($port) {
 
     stream_set_blocking($socket, 0);
 
-    while (true) {
+    while (TRUE) {
         yield waitForRead($socket);
         $clientSocket = stream_socket_accept($socket, 0);
         yield newTask(handleClient($clientSocket));
     }
 }
 
- 
-function handleClient($socket) {
+function handleClient($socket)
+{
+
     yield waitForRead($socket);
     $data = fread($socket, 8192);
- 
-    $msg = "Received following request:\n\n$data";
+
+    $msg       = "Received following request:\n\n$data";
     $msgLength = strlen($msg);
-$response = <<<RES
+    $response  = <<<RES
 HTTP/1.1 200 OK\r
 Content-Type: text/plain\r
 Content-Length: $msgLength\r
@@ -432,127 +460,141 @@ $msg\r
 RES;
     yield waitForWrite($socket);
     fwrite($socket, $response);
- 
+
     fclose($socket);
 }
 
-function echoTimes($msg, $max) {
+function echoTimes($msg, $max)
+{
+
     for ($i = 1; $i <= $max; ++$i) {
         echo "$msg iteration $i\n";
         yield;
     }
 }
- 
-function task3() {
+
+function task3()
+{
+
     echoTimes('foo', 10); // print foo ten times
     echo "---\n";
     echoTimes('bar', 5); // print bar five times
     yield; // force it to be a coroutine
 }
 
-function retval($value) {
+function retval($value)
+{
+
     return new CoroutineReturnValue($value);
 }
 
-function stackedCoroutine0(Generator $gen) {
+function stackedCoroutine0(Generator $gen)
+{
+
     $stack = new SplStack;
- 
-    for (;;) {
+
+    for (; ;) {
         $value = $gen->current();
- 
+
         if ($value instanceof Generator) {
             $stack->push($gen);
             $gen = $value;
             continue;
         }
- 
+
         $isReturnValue = $value instanceof CoroutineReturnValue;
         if (!$gen->valid() || $isReturnValue) {
             if ($stack->isEmpty()) {
                 return;
             }
- 
+
             $gen = $stack->pop();
             $gen->send($isReturnValue ? $value->getValue() : NULL);
             continue;
         }
- 
+
         $gen->send(yield $gen->key() => $value);
     }
 }
 
-function stackedCoroutine(Generator $gen) {
-    $stack = new SplStack;
-    $exception = null;
- 
-    for (;;) {
+function stackedCoroutine(Generator $gen)
+{
+
+    $stack     = new SplStack;
+    $exception = NULL;
+
+    for (; ;) {
         try {
             if ($exception) {
                 $gen->throw($exception);
-                $exception = null;
+                $exception = NULL;
                 continue;
             }
- 
+
             $value = $gen->current();
- 
+
             if ($value instanceof Generator) {
                 $stack->push($gen);
                 $gen = $value;
                 continue;
             }
- 
+
             $isReturnValue = $value instanceof CoroutineReturnValue;
             if (!$gen->valid() || $isReturnValue) {
                 if ($stack->isEmpty()) {
                     return;
                 }
- 
+
                 $gen = $stack->pop();
                 $gen->send($isReturnValue ? $value->getValue() : NULL);
                 continue;
             }
- 
+
             try {
                 $sendValue = (yield $gen->key() => $value);
             } catch (Exception $e) {
                 $gen->throw($e);
                 continue;
             }
- 
+
             $gen->send($sendValue);
         } catch (Exception $e) {
             if ($stack->isEmpty()) {
                 throw $e;
             }
- 
-            $gen = $stack->pop();
+
+            $gen       = $stack->pop();
             $exception = $e;
         }
     }
 }
 
-function server1($port) {
+function server1($port)
+{
+
     echo "Starting server at port $port...\n";
- 
+
     $socket = @stream_socket_server("tcp://localhost:$port", $errNo, $errStr);
     if (!$socket) throw new Exception($errStr, $errNo);
- 
+
     stream_set_blocking($socket, 0);
- 
+
     $socket = new CoSocket($socket);
-    while (true) {
+    while (TRUE) {
         yield newTask(
             handleClient(yield $socket->accept())
         );
     }
 }
- 
-function handleClient1($socket) {
+
+function handleClient1($socket)
+{
+
     $data = (yield $socket->read(8192));
- 
-    $msg = "Received following request:\n\n$data";
+
+    $msg       = "Received following request:\n\n$data";
     $msgLength = strlen($msg);
- 
+
     $response = <<<RES
 HTTP/1.1 200 OK\r
 Content-Type: text/plain\r
@@ -561,12 +603,14 @@ Connection: close\r
 \r
 $msg
 RES;
- 
+
     yield $socket->write($response);
     yield $socket->close();
 }
 
-function gen() {
+function gen()
+{
+
     echo "Foo\n";
     try {
         yield;
@@ -576,9 +620,12 @@ function gen() {
     echo "Bar\n";
 }
 
-function killTask1($tid) {
+function killTask1($tid)
+{
+
     return new SystemCall(
-        function(Task $task, Scheduler $scheduler) use ($tid) {
+        function (Task $task, Scheduler $scheduler) use ($tid) {
+
             if ($scheduler->killTask($tid)) {
                 $scheduler->schedule($task);
             } else {
@@ -588,7 +635,9 @@ function killTask1($tid) {
     );
 }
 
-function task4() {
+function task4()
+{
+
     try {
         yield killTask1(500);
     } catch (Exception $e) {
@@ -597,7 +646,6 @@ function task4() {
 }
 
 try {
-    
 
     /*$gen = gen();
     $gen->rewind();                    

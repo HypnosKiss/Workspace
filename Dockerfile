@@ -1,73 +1,65 @@
-FROM centos:7.4.1708
+FROM php:7.3
 
-RUN yum -y install gcc gcc++ gcc-c++ wget make libxml2 libxml2-devel openssl openssl-devel curl curl-devel libpng libjpeg libjpeg-devel libpng-devel freetype freetype-devel  bzip2 bzip2-devel bison autoconf readline-devel libedit-devel gmp  gmp-devel
+MAINTAINER lixiang <16675112194@gmail>
 
-COPY php-7.1.9.tar.gz /usr/src/
+# Version
+ENV PHPREDIS_VERSION 4.0.1
+ENV SWOOLE_VERSION 4.3.4
+#ENV EASYSWOOLE_VERSION 3.x-dev
 
-COPY php.sh /etc/profile.d/
+# Timezone
+RUN /bin/cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && echo 'Asia/Shanghai' > /etc/timezone
 
-COPY ld.conf /etc/ld.so.conf.d/
+# Libs
+RUN apt-get update \
+    && apt-get install -y \
+    curl \
+    wget \
+    git \
+    zip \
+    libz-dev \
+    libssl-dev \
+    libnghttp2-dev \
+    libpcre3-dev \
+    && apt-get clean \
+    && apt-get autoremove
 
-COPY composer.phar swoole-src-2.1.3.tar.gz v0.13.3.tar.gz libmcrypt-2.5.7.tar.gz /usr/src/
+# 安装php扩展直接 docker-php-ext-install 扩展名就行
+# Composer && PDO extension &&　Bcmath extension  curl -sS https://getcomposer.org/installer | php 或 php -r "readfile('https://getcomposer.org/installer');" | php
+RUN php -r "readfile('https://getcomposer.org/installer');" | php \
+    && mv composer.phar /usr/local/bin/composer \
+    && composer self-update --clean-backups \
+    && docker-php-ext-install pdo_mysql \
+    && docker-php-ext-install sockets \
+    && docker-php-ext-install pcntl \
+    && docker-php-ext-install bcmath
 
-RUN     cd /usr/src/ && tar -xzvf libmcrypt-2.5.7.tar.gz && cd libmcrypt-2.5.7 && ./configure && make && make install && /sbin/ldconfig \
-	&& groupadd www && useradd -g www www \
-        && cd /usr/src/ \
-	&& tar -xzvf php-7.1.9.tar.gz \
-	&& cd php-7.1.9 \
-	&& ./configure --prefix=/usr/local/php --with-config-file-path=/usr/local/php/etc --with-config-file-scan-dir=/usr/local/php/conf.d \
-	--enable-fpm --enable-sockets --with-fpm-user=www --with-fpm-group=www --enable-mysqlnd --with-mysqli=mysqlnd --with-pdo-mysql=mysqlnd --with-libedit \
-	--with-curl --with-openssl --with-zlib --enable-xml --enable-mbstring --enable-ftp --with-mhash --with-mcrypt --enable-bcmath --with-gmp --with-gd \
- 	--enable-json --with-jpeg-dir --with-png-dir  --with-freetype-dir \
-	&& make \
-	&& make install \
-	&& cd /usr/src/ \
-	&& tar -xzvf v0.13.3.tar.gz \
-	&& cd hiredis-0.13.3 \
-	&& make -j \
-	&& make install \
-	&& ldconfig \
-	&& source /etc/profile \
-	&& cd /usr/src \
-	&& tar -xzvf swoole-src-2.1.3.tar.gz \
-	&& cd swoole-src-2.1.3 \
-	&& phpize \
-	&& ./configure --enable-async-redis  --enable-openssl \
-	&& make clean \
-	&& make -j \
-	&& make install \
-	&& pecl install redis \
-	&& pecl install inotify \
-	&& pecl clear-cache \
-	&& yum clean all \
-	&& mv /usr/src/composer.phar /usr/local/bin/composer \
-	&& chmod 777 /usr/local/bin/composer \
-	&& cd /usr/src \
-	&& mkdir -p /usr/local/php/{etc,conf.d} \
-	&& cp /usr/src/php-7.1.9/php.ini-production /usr/local/php/etc/php.ini \
-	&& sed -i 's/post_max_size =.*/post_max_size = 50M/g' /usr/local/php/etc/php.ini \
-  	&& sed -i 's/upload_max_filesize =.*/upload_max_filesize = 50M/g' /usr/local/php/etc/php.ini \
-  	&& sed -i 's/;date.timezone =.*/date.timezone = PRC/g' /usr/local/php/etc/php.ini \
-	&& sed -i 's/short_open_tag =.*/short_open_tag = On/g' /usr/local/php/etc/php.ini \
- 	&& sed -i 's/;cgi.fix_pathinfo=.*/cgi.fix_pathinfo=0/g' /usr/local/php/etc/php.ini \
-  	&& sed -i 's/max_execution_time =.*/max_execution_time = 300/g' /usr/local/php/etc/php.ini \
-  	&& sed -i 's/disable_functions =.*/disable_functions = passthru,exec,system,chroot,scandir,chgrp,chown,shell_exec,proc_open,proc_get_status,popen,ini_alter,ini_restore,dl,openlog,syslog,readlink,symlink,popepassthru,stream_socket_server/g' /usr/local/php/etc/php.ini \
-  	&& echo 'extension=swoole.so' >> /usr/local/php/etc/php.ini \
-	&& echo 'extension=redis.so' >> /usr/local/php/etc/php.ini \
-	&& echo 'extension=inotify.so' >> /usr/local/php/etc/php.ini
-
-RUN cd /usr/src && rm -rf ./*
-
-COPY php-fpm.conf /usr/local/php/etc/php-fpm.conf1
-
-COPY php-fpm /usr/local/bin/php-fpm1
-
-RUN chmod u+x /usr/local/bin/php-fpm1
+# Redis extension && Swoole extension
+RUN wget http://pecl.php.net/get/redis-${PHPREDIS_VERSION}.tgz -O /tmp/redis.tar.tgz \
+    && pecl install /tmp/redis.tar.tgz \
+    && rm -rf /tmp/redis.tar.tgz \
+    && docker-php-ext-enable redis \
+    && wget https://github.com/swoole/swoole-src/archive/v${SWOOLE_VERSION}.tar.gz -O swoole.tar.gz \
+    && mkdir -p swoole \
+    && tar -xf swoole.tar.gz -C swoole --strip-components=1 \
+    && rm swoole.tar.gz \
+    && ( \
+    cd swoole \
+    && phpize \
+    && ./configure  --enable-sockets --enable-mysqlnd --enable-openssl --enable-http2 \
+    && make -j$(nproc) \
+    && make install \
+    ) \
+    && rm -r swoole \
+    && docker-php-ext-enable swoole
 
 WORKDIR /www
 
-ENTRYPOINT ["php-fpm1"]
+# Install project
+#RUN cd /www && composer require easyswoole/easyswoole=${EASYSWOOLE_VERSION} && php vendor/bin/easyswoole install
 
-EXPOSE 9000 8081 8082 8083
+EXPOSE 9501 3366
 
-CMD ["/bin/bash"]
+ENTRYPOINT ["bash"]
+#ENTRYPOINT ["php", "/var/www/code/easyswoole", "start"]
+#docker run -p 8080:80 -v $(pwd):/www -itd --entrypoint="" --name swoole_develop1 --privileges=true 16675112194/swoft:official bash

@@ -1,0 +1,2 @@
+#! /bin/sh
+/usr/local/php/sbin/php-fpm --fpm-config /usr/local/php/etc/php-fpm.conf --nodaemonize

@@ -1,0 +1,44 @@
+﻿#https://github.com/tatsuhiro-t/nghttp2.git
+wget https://github.com/nghttp2/nghttp2/releases/download/v1.36.0/nghttp2-1.36.0.tar.bz2
+tar -jxvf nghttp2-1.36.0.tar.bz2
+cd nghttp2-1.36.0
+./configure
+make
+make install
+
+phpize && \
+./configure \
+--with-php-config=/usr/local/php/bin/php-config \
+--enable-coroutine \
+--enable-openssl  \
+--enable-http2  \
+--enable-sockets \
+--enable-mysqlnd && \
+make clean && make && sudo make install
+
+解决办法
+
+sudo vi /etc/ld.so.conf
+ 添加
+
+include /usr/local/lib
+
+保存退出
+
+执行命令
+
+sudo ldconfig
+重启php-fpm和nginx
+
+sudo service php7.0-fpm restart
+sudo service nginx restart
+
+/var/lib/docker 是 Docker 安装后默认的容器和镜像目录，也要一并删除
+rm -rfv /var/lib/docker/
+
+https://codeload.github.com/swoole/swoole-src/tar.gz/v4.2.12
+
+docker image prune #删除空镜像
+docker run -p 8080:80 -dit --restart="always" --name swoft --privileged=true -v /data/www/swoft:/wwwroot swoft:1.0.0 /bin/bash
+docker run -p 8080:80 -dit --restart="always" --name swoft1 --privileged=true -v /data/www/swoft:/data/www/swoft swoft/swoft /bin/bash
+docker run -p 8081:80 -v $(pwd):/var/www/swoft -itd --entrypoint="" --name swoft0 --privileged=true 16675112194/swoft:official bash

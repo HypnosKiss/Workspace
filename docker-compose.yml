@@ -1,0 +1,22 @@
+version: '3'
+
+services:
+  swoole:
+    container_name: swoole_develop
+    image: 16675112194/swoole:4.3.4
+    #       build: ./
+    ports:
+      - "8080:80"
+      - "9000:9000"
+      - "3366:3366"
+    volumes:
+      - ./data/:/www
+    stdin_open: true
+    tty: true
+    privileged: true
+    restart: always
+    #entrypoint: ["bash"]
+    #使用Supervisor和docker时需要使用前台运行模式(v1.2.5+使用--console,否则使用daemonize参数)否则无法正常启动。
+    entrypoint: ["./SMProxy/bin/SMProxy", "start", "--console"]
+    #entrypoint: ["php","./www/SMProxy/bin/SMProxy", "start", "--console"]
+    #docker run -p 8081:80 -v $(pwd):/var/www/swoft -itd --entrypoint="" --name swoft0 --privileges=true 16675112194/swoft:official bash
