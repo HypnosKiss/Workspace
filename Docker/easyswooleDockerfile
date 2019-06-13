@@ -1,13 +1,14 @@
-FROM php:7.2
+FROM php:7.3
+
+MAINTAINER lixiang <16675112194@gmail>
 
 # Version
 ENV PHPREDIS_VERSION 4.0.1
-ENV SWOOLE_VERSION 4.3.1
+ENV SWOOLE_VERSION 4.3.4
 ENV EASYSWOOLE_VERSION 3.x-dev
 
 # Timezone
-RUN /bin/cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
-    && echo 'Asia/Shanghai' > /etc/timezone
+RUN /bin/cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && echo 'Asia/Shanghai' > /etc/timezone
 
 # Libs
 RUN apt-get update \
@@ -28,6 +29,8 @@ RUN curl -sS https://getcomposer.org/installer | php \
     && mv composer.phar /usr/local/bin/composer \
     && composer self-update --clean-backups \
     && docker-php-ext-install pdo_mysql \
+    && docker-php-ext-install pcntl \
+    && docker-php-ext-install sockets \
     && docker-php-ext-install bcmath
 
 # Redis extension && Swoole extension
@@ -56,6 +59,6 @@ RUN cd /www \
     && composer require easyswoole/easyswoole=${EASYSWOOLE_VERSION} \
     && php vendor/bin/easyswoole install
 
-EXPOSE 9501
+#EXPOSE 9501
 
-ENTRYPOINT ["php", "/var/www/code/easyswoole", "start"]
+ENTRYPOINT ["php", "/www/easyswoole", "start"]

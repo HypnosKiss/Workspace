@@ -5,7 +5,7 @@ MAINTAINER lixiang <16675112194@gmail>
 # Version
 ENV PHPREDIS_VERSION 4.0.1
 ENV SWOOLE_VERSION 4.3.4
-#ENV EASYSWOOLE_VERSION 3.x-dev
+#ENV EASYSWOOLE_VERSION 3.x-dev PHPREDIS_VERSION 4.0.1 4.3.0 SWOOLE_VERSION 4.3.4 4.2.13 4.2.12
 
 # Timezone
 RUN /bin/cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && echo 'Asia/Shanghai' > /etc/timezone
@@ -58,7 +58,7 @@ WORKDIR /www
 # Install project
 #RUN cd /www && composer require easyswoole/easyswoole=${EASYSWOOLE_VERSION} && php vendor/bin/easyswoole install
 
-EXPOSE 9501 3366
+#EXPOSE 9501 3366
 
 ENTRYPOINT ["bash"]
 #ENTRYPOINT ["php", "/var/www/code/easyswoole", "start"]
