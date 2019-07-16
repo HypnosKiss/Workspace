@@ -1,0 +1,26 @@
+{
+  "name":"test",
+  "phone":"13316689581",
+  "provinceText":"广东省",
+  "cityText":"东莞市",
+  "countyText":"寮步镇",
+  "address":"XXXXXXXXX",
+  "images":[
+    {
+      "type":"idCardFront",
+      "content":"身份证正面"
+    },
+    {
+      "type":"idCardObverse",
+      "content":"身份证反面"
+    },
+    {
+      "type":"businessLicense",
+      "content":"营业执照"
+    },
+    {
+      "type":"storefront",
+      "content":"店面"
+    }
+  ]
+}

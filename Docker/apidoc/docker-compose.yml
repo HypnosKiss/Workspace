@@ -1,0 +1,18 @@
+version: '3'
+
+services:
+  apidoc:
+    container_name: apidoc
+    image: 16675112194/swoole:apidoc_v1
+    volumes:
+      - D:\phpstudy\PHPTutorial\WWW\SVN\NuoManDiShangCheng:/www
+    stdin_open: true
+    tty: true
+    privileged: true
+    restart: always
+    entrypoint: ["bash"]
+    ## api/modules/v1/controllers API目录 output输出目录
+    #apidoc -i api/modules/v1/controllers -o output/
+
+    #docker run --rm -v D:\phpstudy\PHPTutorial\WWW\SVN\NuoManDiShangCheng:/www -it 16675112194/swoole:apidoc_v1  -i api/modules/v1/controllers  -o output/
+    #docker run --rm -v D:\phpstudy\PHPTutorial\WWW\SVN\NuoManDiShangCheng:/www --name="apidoc" -it 16675112194/swoole:apidoc_v1 /www/apidoc -i /www/api/modules/v1/controllers  -o /www/output/

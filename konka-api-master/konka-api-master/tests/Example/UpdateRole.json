@@ -1,0 +1,16 @@
+{
+  "name":"角色一",
+  "addPermission":[
+    {
+      "permission":"permissionFinance"
+    },
+    {
+      "permission":"permissionProduct"
+    }
+  ],
+  "deletePermission":[
+    {
+      "permission":"permissionPartner"
+    }
+  ]
+}

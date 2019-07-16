@@ -1,0 +1,22 @@
+{
+  "payType":10,    //支付方式   可空
+  "distribution":10,  //配送方式
+  "addressesCode":"USER100002001",   //地址编码
+  "userCouponCode":"123",   //优惠劵编码
+  "invoiceCode":"USER100002I001",   //发票编码
+  "freight":"10",   //邮费
+  "products":[
+    {
+      "shoppingCartId":1,   //购物车ID  可空
+      "productSpecificationCodes":"PS0000000008",   //产品规格编码
+      "num":2   //数量
+    },
+    {
+      "shoppingCartId":2,
+      "productSpecificationCodes":"PS000000000A",
+      "num":1
+    }
+  ],
+  "remarks":"",    //备注
+  "actuallyPayPrice":220    //支付金额
+}

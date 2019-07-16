@@ -1,0 +1,25 @@
+{
+  "type":10,  //类型  10退 20换
+  "refundType":10,   //退货类型  10上门取件  20快递
+  "content":"有问题",   //描述
+  "images":[    //图片描述
+    {
+      "image":"test",
+      "order":0
+    },{
+      "image":"test",
+      "order":1
+    }
+  ],
+  "price":100,  //退货金额
+  "products":[
+    {
+      "orderProductId":83,   //订单产品ID
+      "num":1    //出库数量
+    },
+    {
+      "orderProductId":84,
+      "num":1
+    }
+  ]
+}

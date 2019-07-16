@@ -1,0 +1,12 @@
+{
+  "invoiceType":20, //发票类型
+  "status":10,   //状态
+  "type":10,   //类型
+  "unitName":"test1",   //名称
+  "taxTicket":"test1",  //税票号
+  "taxTicketAddress":"test1",  //税票地址
+  "taxTicketPhone":"15088888888",  //税票电话
+  "openBank":"test",   //开户行
+  "bankAccount":"123456789",  //银行帐号
+  "userAddressesCode":"USER100002002"  //地址编码
+}

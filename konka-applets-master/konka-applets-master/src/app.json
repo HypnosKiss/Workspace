@@ -1,0 +1,83 @@
+{
+  "pages": [
+    "pages/index/main",
+    "pages/category-products/main",
+    "pages/product-detail/main",
+    "pages/product-comment/main",
+    "pages/make-group/main",
+    "pages/make-group-detail/main",
+    "pages/bargain-product/main",
+    "pages/bargain-product-detail/main",
+    "pages/new-products/main",
+    "pages/hot-sale/main",
+    "pages/popularity-list/main",
+    "pages/customer-service/main",
+    "pages/categories/main",
+    "pages/cart/main",
+    "pages/place-order/main"
+  ],
+  "subPackages": [{
+    "root": "pages/user/",
+    "pages": [
+      "index/main",
+      "partner-login/main",
+      "address/main",
+      "address-edit/main",
+      "invoice/main",
+      "invoice-edit/main",
+      "my-orders/main",
+      "order-detail/main",
+      "refund-and-exchange/main",
+      "comment/main",
+      "refund-and-exchange-orders/main",
+      "refund-and-exchange-detail/main",
+      "my-bargain-products/main",
+      "my-make-group-products/main",
+      "year-sale/main",
+      "month-sale/main",
+      "distribution-order/main",
+      "my-team/main",
+      "accumulated-income/main",
+      "cash/main",
+      "partner-register/main",
+      "order-offline/main"
+    ]
+  }, {
+    "root": "pages/instant-kill/",
+    "pages": ["main"]
+  }, {
+    "root": "pages/instant-kill-detail/",
+    "pages": ["main"]
+  }, {
+    "root": "pages/helpers/",
+    "pages": ["main"]
+  }, {
+    "root": "pages/search/",
+    "pages": ["main"]
+  }, {
+    "root": "pages/search-result/",
+    "pages": ["main"]
+  }, {
+    "root": "pages/partner/",
+    "pages": [
+      "index/main",
+      "take-cash/main",
+      "take-cash-histories/main",
+      "my-team/main",
+      "my-member-team/main",
+      "my-team-orders/main",
+      "my-member-orders/main",
+      "my-sub-member-orders/main",
+      "my-recommend/main",
+      "accept-recommend/main",
+      "apply/main",
+      "orders-details-list/main"
+    ]
+  }],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#fff",
+    "navigationBarTitleText": "WeChat",
+    "navigationBarTextStyle": "black"
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "username":"15099999999",
+  "password":"123456",
+  "addPermission":[
+    {
+      "permission":"permissionSetting"
+    }
+  ],
+  "deletePermission":[
+    {
+      "permission":"permissionPartner"
+    }
+  ]
+}

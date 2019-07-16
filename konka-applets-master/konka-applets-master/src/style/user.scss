@@ -1,0 +1,65 @@
+
+.consignee:nth-of-type(1) {
+  margin-top: 20px;
+}
+.consignee {
+  //@extend .column-flex;
+  //@extend .align-item-stretch;
+
+  margin-bottom: 20px;
+  padding-left: 30px;
+  box-sizing: border-box;
+  background-color: #ffffff;
+
+  .base-info {
+    @extend .border-bottom;
+
+    padding-top: 42px;
+    padding-bottom: 36px;
+    padding-right: 30px;
+  }
+  .name, .phone {
+    font-size: 30px;
+    color: $deep_black;
+  }
+  .name {
+    margin-right: 30px;
+  }
+  .address {
+    font-size: 26px;
+    color: $light_black;
+  }
+
+  .functions {
+    @extend .row-flex;
+    @extend .align-item-center;
+
+    height: 80px;
+    font-size: 26px;
+    color: $light_black;
+    padding-right: 30px;
+    box-sizing: border-box;
+
+    .operate {
+      @extend .row-flex;
+      @extend .align-item-center;
+
+      margin-right: 55px;
+    }
+    .operate:nth-last-of-type(1) {
+      margin-right: 0;
+    }
+
+    .iconfont {
+      font-size: 32px;
+      margin-right: 10px;
+    }
+
+    .icon-xuanze-xuanzhong-, .icon-xuanze-weixuanzhong- {
+      font-size: 40px;
+    }
+    .icon-xuanze-xuanzhong- {
+      color: $theme_color;
+    }
+  }
+}

@@ -1,0 +1,89 @@
+{
+  "title": "iphone x",
+  "subTitle": "iphone xxxxxx",
+  "order": 1,
+  "productCategoryCode": "C00000N",
+  "productSpecifications": [
+    {
+      "specificationCodes": [
+        "S00000B",
+        "S00000F"
+      ],
+      "price": 100,
+      "discountPrice": 90,
+      "distributionPrice": 0,
+      "stock": 10000,
+      "images": [
+        {
+          "image": "test",
+          "order": 0
+        },
+        {
+          "image": "test",
+          "order": 1
+        }
+      ]
+    }
+  ],
+  "images": [
+    {
+      "image": "test",
+      "order": 0
+    }
+  ],
+  "content": [
+    {
+      "image": "test",
+      "order": 0
+    }
+  ],
+  "specificationArray": [
+    {
+      "code": "S00000E",
+      "name": "颜色",
+      "subSpecification": [
+        {
+          "code": "S00000F",
+          "parentCode": "S00000E",
+          "name": "红色"
+        },
+        {
+          "code": "S00000G",
+          "parentCode": "S00000E",
+          "name": "黄色"
+        },
+        {
+          "code": "S00000H",
+          "parentCode": "S00000E",
+          "name": "蓝色"
+        }
+      ]
+    },
+    {
+      "code": "S00000A",
+      "name": "内存",
+      "subSpecification": [
+        {
+          "code": "S00000B",
+          "parentCode": "S00000A",
+          "name": "16G"
+        },
+        {
+          "code": "S00000C",
+          "parentCode": "S00000A",
+          "name": "32G"
+        },
+        {
+          "code": "S00000D",
+          "parentCode": "S00000A",
+          "name": "64G"
+        }
+      ]
+    }
+  ],
+  "coupons":[
+    {
+      "code":"C20190111002"
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "settings":{
+    "serviceAgreement": "2",  //服务协议
+    "afterSalePolicy": "3",   //售后政策
+    "confidentialityAgreement": "4",  //保密协议
+    "operatingGuidelines": "5",   //操作指引
+    "amountLimit": "6"   //购买金额限制
+  }
+}

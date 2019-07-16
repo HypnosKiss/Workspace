@@ -1,0 +1,52 @@
+
+/*评论*/
+
+.comment-list {
+  .comment .user-info {
+    @extend .row-flex;
+    @extend .align-item-center;
+    padding: 20px 0;
+  }
+  .comment .user-header {
+    @extend .user-header;
+    @extend .fixed-flex-item;
+    margin-right: 20px;
+  }
+  .comment .user-nickname {
+    @extend .elastic-flex-item;
+    @extend .line-clamp-1-ellipsis;
+    font-size: 28px;
+    color: $deep_black;
+    margin-right: 20px;
+  }
+  .comment .create-date {
+    @extend .fixed-flex-item;
+    @extend .line-clamp-1-ellipsis;
+    font-size: 24px;
+    color: $light_black;
+  }
+  .comment .specifications {
+    @extend .elastic-flex-item;
+  }
+  .comment .specifications .item {
+    margin-right: 20px;
+    font-size: 24px;
+    color: $light_black;
+    vertical-align: middle;
+  }
+  .comment .achievement {
+    @extend .fixed-flex-item;
+  }
+  .comment .achievement .icon-pingjia-xuanzhong- {
+    font-size: 40px;
+    color: $light_black;
+  }
+  .comment .achievement .icon-pingjia-xuanzhong-.active {
+    color: #ffa30f;
+  }
+  .comment .comment-content {
+    padding: 34px 0;
+    font-size: 28px;
+    color: $deep_black;
+  }
+}

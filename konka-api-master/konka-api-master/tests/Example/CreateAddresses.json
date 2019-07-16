@@ -1,0 +1,10 @@
+{
+  "name":"test",    //收货人名称
+  "phone":"15077777777",   //收货人电话
+  "provinceText":"广东省",   //省
+  "cityText":"东莞市",   //市
+  "countyText":"寮步镇",   //县
+  "address":"xxxx村",  //详细地址
+  "postalCode":"523400",  //邮政编码
+  "status":10   //是否默认
+}

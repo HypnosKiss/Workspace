@@ -1,0 +1,15 @@
+{
+  "products": [
+    {
+      "productCode":"P000000000A",   //产品编码
+      "rate":4.5,    //评分
+      "content":"好好好好好好好",   //内容
+      "images":[    //内容图片组
+        {
+          "image":"test",
+          "order":0
+        }
+      ]
+    }
+  ]
+}

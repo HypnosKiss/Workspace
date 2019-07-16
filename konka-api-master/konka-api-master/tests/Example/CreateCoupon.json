@@ -1,0 +1,11 @@
+{
+  "type":10,   //优惠券类型
+  "name":"xxx优惠劵",    //名称
+  "discount":10,  //金额/折扣
+  "num":99999,   //数量
+  "content":"xxxxxxxxxxxxxxxxx",    //内容
+  "startAt":"2019/01/11",   //开始时间
+  "endAt":"2019/10/11",   //结束时间
+  "conditions":20,   //条件
+  "conditionsValue":"30"   //条件值
+}

@@ -1,0 +1,129 @@
+{
+	"description": "项目配置文件。",
+	"setting": {
+		"urlCheck": false,
+		"es6": false,
+		"postcss": true,
+		"minified": true,
+		"newFeature": true,
+		"nodeModules": false,
+		"autoAudits": false,
+		"uglifyFileName": false
+	},
+	"miniprogramRoot": "dist/wx/",
+	"compileType": "miniprogram",
+	"appid": "wx92417e9af28ae48a",
+	"projectname": "konka-github",
+	"condition": {
+		"search": {
+			"current": -1,
+			"list": []
+		},
+		"conversation": {
+			"current": -1,
+			"list": []
+		},
+		"plugin": {
+			"current": -1,
+			"list": []
+		},
+		"game": {
+			"currentL": -1,
+			"list": []
+		},
+		"miniprogram": {
+			"current": 2,
+			"list": [
+				{
+					"id": 1,
+					"name": "首页",
+					"pathName": "pages/index/main",
+					"query": ""
+				},
+				{
+					"id": 1,
+					"name": "销售额",
+					"pathName": "pages/user/month-sale/main",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": 2,
+					"name": "产品详情",
+					"pathName": "pages/product-detail/main",
+					"query": "scene=U%3APPPPPPP%7CP%3A123123123",
+					"scene": 1012
+				},
+				{
+					"id": 4,
+					"name": "未结算K币",
+					"pathName": "pages/user/accumulated-income/main",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "账号登录",
+					"pathName": "pages/user/partner-login/main",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "账号注册",
+					"pathName": "pages/user/partner-register/main",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "个人中心",
+					"pathName": "pages/user/index/main",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "发票管理",
+					"pathName": "pages/user/invoice/main",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "全部订单",
+					"pathName": "pages/user/my-orders/main",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "分销订单",
+					"pathName": "pages/user/distribution-order/main",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "结算k币",
+					"pathName": "pages/user/accumulated-income/main",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "提现",
+					"pathName": "pages/user/cash/main",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "销售额",
+					"pathName": "pages/product-comment/main",
+					"query": "",
+					"scene": null
+				}
+			]
+		}
+	}
+}
