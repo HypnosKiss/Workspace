@@ -1,0 +1,28 @@
+version: '3'
+
+services:
+  swoole_hyperf:
+    container_name: swoole_hyperf
+    image: 16675112194/swoole:hyperf
+      #       build: ./
+      #networks:
+      #redis-master:
+    #ipv4_address: 172.50.0.2
+    ports:
+      - "9502:9501"
+    volumes:
+      - D:\phpstudy\PHPTutorial\WWW\Code\docker\docker\hyperf:/www
+    stdin_open: true
+    tty: true
+    privileged: true
+    restart: always
+    entrypoint: ["bash"]
+    # - php SMProxy/bin/SMProxy start --daemonize
+    # - echo "swoole.use_shortname = 'Off'" >> /usr/local/etc/php/conf.d/docker-php-ext-swoole.ini
+    # - php hyperf-skeleton/bin/hyperf.php start
+    #使用Supervisor和docker时需要使用前台运行模式(v1.2.5+使用--console,否则使用daemonize参数)否则无法正常启动。
+    #entrypoint: ["./bin/SMProxy", "start", "--console"] #./bin/SMProxy start --daemonize
+    #netstat -a -o -n | Select-String -Pattern 2375
+    #netstat -an | findstr 2375
+    #netsh interface ipv4 show excludedportrange protocol=tcp
+    #docker 连接(桥接模式)本地主机需用本地主机ip连接

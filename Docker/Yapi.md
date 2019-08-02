@@ -1,17 +1,21 @@
 #使用 Docker 构建 Yapi
 #1、启动 MongoDB
-docker run -d --name mongo-yapi mongo
+docker run -itd --name mongo-yapi mongo
+#docker run -itd --name mongo-yapi 16675112194/yapi:mongo  ## 16675112194/yapi:mongo 仓库镜像 
 
 #2、获取 Yapi 镜像，版本信息可在 阿里云镜像仓库 查看
 docker pull registry.cn-hangzhou.aliyuncs.com/anoy/yapi
+#docker pull 16675112194/yapi:yapi  ## 16675112194/yapi:yapi 仓库镜像 
 
 #3、初始化 Yapi 数据库索引及管理员账号
 docker run -it --rm --link mongo-yapi:mongo --entrypoint npm --workdir /api/vendors registry.cn-hangzhou.aliyuncs.com/anoy/yapi run install-server
+#docker run -it --rm --link mongo-yapi:mongo --entrypoint npm --workdir /api/vendors 16675112194/yapi:yapi run install-server
 
 #自定义配置文件挂载到目录 /api/config.json，官方自定义配置文件 https://github.com/YMFE/yapi/blob/master/config_example.json
 
 #4、启动 Yapi 服务
-docker run -d --name yapi --link mongo-yapi:mongo --workdir /api/vendors -p 3000:3000 registry.cn-hangzhou.aliyuncs.com/anoy/yapi server/app.js
+docker run -itd --name yapi --link mongo-yapi:mongo --workdir /api/vendors -p 3000:3000 registry.cn-hangzhou.aliyuncs.com/anoy/yapi server/app.js
+#docker run -itd --name yapi --link mongo-yapi:mongo --workdir /api/vendors -p 3000:3000 16675112194/yapi:yapi server/app.js
 
 #使用 Yapi
 #访问 http://localhost:3000   登录账号 admin@admin.com，密码 ymfe.org

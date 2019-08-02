@@ -1,0 +1,20 @@
+version: '3'
+
+services:
+  python:
+    container_name: python
+    image: 16675112194/python:scrapy_1.0
+    ports:
+      - "6800:80"
+    volumes:
+      - D:\phpstudy\PHPTutorial\WWW\Python:/www
+    stdin_open: true
+    tty: true
+    privileged: true
+    restart: always
+    entrypoint: ["bash"]
+
+    #netstat -a -o -n | Select-String -Pattern 2375
+    #netstat -an | findstr 2375
+    #netsh interface ipv4 show excludedportrange protocol=tcp
+    #docker 连接(桥接模式)本地主机需用本地主机ip连接

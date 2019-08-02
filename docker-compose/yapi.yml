@@ -1,0 +1,23 @@
+version: '3'
+
+services:
+  node_yapi:
+    container_name: node_yapi
+    image: 16675112194/swoole:node_latest
+    links:
+      - mongo
+    ports:
+      - "3001:3000"
+      - "9090:9090"
+      #- "27017:27017"
+    volumes:
+      - D:\phpstudy\PHPTutorial\WWW\Code\docker\Dockerfile\Yapi:/www
+    stdin_open: true
+    tty: true
+    privileged: true
+    restart: always
+    entrypoint: ["bash"]
+    #npm install -g yapi-cli --registry https://registry.npm.taobao.org
+    #yapi server
+
+    #clone https://github.com/YMFE/yapi.git vendors
