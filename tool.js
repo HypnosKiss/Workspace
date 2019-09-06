@@ -133,5 +133,219 @@ function JSONToCSVConvertor(JSONData, ReportTitle, ShowLabel) {
     document.body.removeChild(link);
 }
 
+/**
+ * 是否去除所有空格
+ * @param str
+ * @param is_global 如果为g或者G去除所有的
+ * @returns
+ */
+function Trim(str,is_global) {
+    var result;
+    result = str.replace(/(^\s+)|(\s+$)/g,"");
+    if(is_global.toLowerCase()=="g") {
+        result = result.replace(/\s/g,"");
+    }
+    return result;
+}
+
+/**
+ * 空格输入去除
+ * @param e
+ * @returns {Boolean}
+ */
+function inputSapceTrim(e,this_temp) {
+    this_temp.value = Trim(this_temp.value,"g");
+    var keynum;
+    if(window.event) {// IE
+        keynum = e.keyCode
+    }
+    else if(e.which){ // Netscape/Firefox/Opera
+        keynum = e.which
+    }
+    if(keynum == 32){
+        return false;
+    }
+    return true;
+}
+
+/**
+ * 禁止空格输入
+ * @param e
+ * @returns {Boolean}
+ */
+function banInputSapce(e) {
+    var keynum;
+    if(window.event){ // IE
+        keynum = e.keyCode
+    }
+    else if(e.which){ // Netscape/Firefox/Opera
+        keynum = e.which
+    }
+    if(keynum == 32){
+        return false;
+    }
+    return true;
+}
+
+/**
+ * layer弹窗提示信息
+ * @param msg 提示信息
+ * @param icon 颜色 1-绿色、2-红色、3-橙色、4-灰色、
+ * @param time 关闭时间
+ * @param callback 回调函数
+ */
+function layerMsg(msg, icon, time, callback) {
+    msg = msg ? msg : '成功';
+    time = time ? time : 3000;
+    icon = icon ? icon : 1;
+    layer.msg(msg, {
+        icon: icon,
+        time: time //2秒关闭（如果不配置，默认是3秒）
+    }, function () {
+        if (typeof callback === "function") {
+            callback();
+        }
+    });
+}
+
+/**
+ *
+ * @param msg 提示信息
+ * @param element 选择器
+ * @param position 位置 1-上 2-右（默认） 3-下 4-左
+ * @param time 销毁时间
+ * @param color 背景颜色 #3595CC
+ */
+function layerTips(msg, element, position = 2, time = 0, color = '#FF0000') {
+    layer.tips(msg, element, {
+        tips: [position, color],
+        time: time
+    });
+}
+
+/**
+ * 刷新
+ * @param time
+ * @param $option
+ */
+function reload(time = 1000,$option) {
+    setTimeout(function () {
+        window.location.reload($option);
+    }, time);
+}
+
+/**
+ * 异步重载数据
+ * @param element
+ * @param url
+ * @param data
+ * @param callback
+ */
+function asyncReloadData(element,url,data,callback) {
+    element.load(url, data, function() {
+                     if (typeof callback === "function") {
+                         callback();
+                     }
+                 }
+    );
+}
+
+//----- @Desc计算文字的长度 -----
+function getTextWidth(str) {
+    var width = 0;
+    var html = document.createElement('span');
+    html.innerText = str;
+    html.className = 'getTextWidth';
+    document.querySelector('body').appendChild(html);
+    width = document.querySelector('.getTextWidth').offsetWidth;
+    document.querySelector('.getTextWidth').remove();
+    return width;
+}
+//----- END -----
+
+/**
+ * 阻止浏览器的默认行为
+ * @param e
+ * @returns {boolean}
+ */
+function stopDefault( e ) {
+    console.log(e);
+    //阻止默认浏览器动作(W3C)
+    if (e && e.preventDefault)
+        e.preventDefault();
+    //IE中阻止函数器默认动作的方式
+    else
+        window.event.returnValue = false;
+    return false;
+}
+
+/**
+ * 停止冒泡行为
+ * @param e
+ */
+function stopBubble(e) {
+    console.log(e);
+    //如果提供了事件对象，则这是一个非IE浏览器
+    if (e && e.stopPropagation)
+    //因此它支持W3C的stopPropagation()方法
+        e.stopPropagation();
+    else
+    //否则，我们需要使用IE的方式来取消事件冒泡
+        window.event.cancelBubble = true;
+}
+
+/**
+ * 同步执行
+ * @param callback1
+ * @param callback2
+ * @param callback1_param
+ * @param callback2_param
+ * @returns {Promise<void>}
+ */
+async function doSomeWork(callback1,callback2,callback1_param=[],callback2_param=[],$is_rely=true) {
+    // callback.apply(this, [param1, param2]);
+    await callback1.apply(this,callback1_param);
+    callback2.apply(this,callback2_param);
+}
+
+/**
+ * 等待执行
+ * @param time
+ * @returns {Promise<any>}
+ */
+function sleep (time) {
+    // 用法
+    /*sleep(500).then(() => {
+     // 这里写sleep之后需要去做的事情
+     });*/
+    return new Promise((resolve) => setTimeout(resolve, time));
+}
+
+/**
+ * 同步执行
+ * @param callback1
+ * @param callback2
+ * @param callback1_param
+ * @param callback2_param
+ * @param $is_rely
+ */
+function sync(callback1,callback2,callback1_param=[],callback2_param=[],$is_rely=true) {
+    // callback.apply(this, [param1, param2]);
+    new Promise(function (resolve) {
+        let result = callback1.apply(this, callback1_param);
+        resolve(result);
+    }).then(function (val) {
+        if ($is_rely === true) {
+            if (val) {
+                callback2.apply(this,callback2_param);
+            }else {
+                console.log(val);
+            }
+        } else {
+            callback2.apply(this,callback2_param);
+        }
+    });
+}
+
 
 

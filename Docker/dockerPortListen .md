@@ -7,3 +7,6 @@ dism.exe /Online /Disable-Feature:Microsoft-Hyper-V
 netsh int ipv4 add excludedportrange protocol=tcp startport=2375 numberofports=1
 #启用Hyper-V并重新启动：
 dism.exe /Online /Enable-Feature:Microsoft-Hyper-V /All
+#查看端口
+netstat -a -o -n | Select-String -Pattern 2375
+netstat -an | findstr 2375
