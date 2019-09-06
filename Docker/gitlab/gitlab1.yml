@@ -1,0 +1,24 @@
+version: '3'
+
+services:
+  web:
+      container_name: gitlab
+      image: 'gitlab/gitlab-ce:latest'
+      tty: true
+      restart: always
+      stdin_open: true
+      privileged: true
+      hostname: 'gitlab.com'
+      environment:
+        GITLAB_OMNIBUS_CONFIG: |
+          external_url 'http://gitlab.com:8880'
+          external_url 'https://gitlab.com:8433'
+          gitlab_rails['gitlab_shell_ssh_port'] = 8822
+      ports:
+        - '8880:8880'
+        - '8433:8433'
+        - '8822:8822'
+      volumes:
+        - 'D:\phpstudy\PHPTutorial\WWW\Code\docker\docker\gitlab\config:/etc/gitlab'
+        - 'D:\phpstudy\PHPTutorial\WWW\Code\docker\docker\gitlab\logs:/var/log/gitlab'
+        - 'D:\phpstudy\PHPTutorial\WWW\Code\docker\docker\gitlab\data:/var/opt/gitlab'

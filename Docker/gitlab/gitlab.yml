@@ -1,0 +1,23 @@
+version: '3'
+
+services:
+  gitlab:
+    container_name: gitlab
+    image: 'gitlab/gitlab-ce:latest'
+    tty: true
+    restart: always
+    stdin_open: true
+    privileged: true
+    hostname: 'gitlab.com'
+    environment:
+      GITLAB_OMNIBUS_CONFIG: |
+        external_url 'https://gitlab.com'
+        # Add any other gitlab.rb configuration here, each on its own line
+    ports:
+      - '8880:8880'
+      - '8433:8433'
+      - '8822:8822'
+    volumes:
+      - 'D:\phpstudy\PHPTutorial\WWW\Code\docker\docker\gitlab\config:/etc/gitlab'
+      - 'D:\phpstudy\PHPTutorial\WWW\Code\docker\docker\gitlab\logs:/var/log/gitlab'
+      - 'D:\phpstudy\PHPTutorial\WWW\Code\docker\docker\gitlab\data:/var/opt/gitlab'
