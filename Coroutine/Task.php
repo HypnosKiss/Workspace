@@ -20,14 +20,26 @@ class Task {
 		$this->coroutine = $coroutine;
 	}
 
+	/**
+	 * 获取任务ID
+	 * @return mixed
+	 */
 	public function getTaskId(){
 		return $this->taskId;
 	}
 
+	/**
+	 * 设置发送值
+	 * @param $sendValue
+	 */
 	public function setSendValue($sendValue){
 		$this->sendValue = $sendValue;
 	}
 
+	/**
+	 * 执行任务
+	 * @return mixed
+	 */
 	public function run(){
 		if($this->beforeFirstYield){
 			$this->beforeFirstYield = false;
@@ -39,6 +51,10 @@ class Task {
 		return $retVal;
 	}
 
+	/**
+	 * 是否完成
+	 * @return bool
+	 */
 	public function isFinished(){
 		return !$this->coroutine->valid();
 	}

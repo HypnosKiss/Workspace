@@ -3,74 +3,51 @@
 namespace sales\script\sales_info_sync;
 
 use Generator;
-use sales\coroutine\Scheduler;
-use sales\coroutine\SystemCall;
-use sales\coroutine\Task;
+use Lite\Core\Application;
+use Lite\DB\Driver\DBAbstract;
+use sales\coroutine\CoroutineManagerAbstract;
 
+require_once 'vendor/autoload.php';
+require_once 'server_config/ServerConfig.php';
+require_once 'lib/autoload.php';
 
-function addTask(Generator $coroutine){
-	return new SystemCall(function(Task $task, Scheduler $scheduler) use ($coroutine){
-		$task->setSendValue($scheduler->addTask($coroutine));
-		$scheduler->schedule($task);
-	});
-}
+$levels    = 4;
+$sale_root = dirname(__DIR__, $levels).'/sale/';
+Application::init('sales', dirname(__DIR__, $levels).'/erp/', Application::MODE_CLI);
+Application::addIncludePath($sale_root.'app/', 'sales\sale');
+Application::addIncludePath($sale_root.'app/include/', 'sales\sale');
+DBAbstract::distinctQueryOff();
 
-function killTask($tid){
-	return new SystemCall(function(Task $task, Scheduler $scheduler) use ($tid){
-		$task->setSendValue($scheduler->killTask($tid));
-		$scheduler->schedule($task);
-	});
-}
+class testCoroutine extends CoroutineManagerAbstract {
 
-function getTaskId(){
-	return new SystemCall(function(Task $task, Scheduler $scheduler){
-		$task->setSendValue($task->getTaskId());
-		$scheduler->schedule($task);
-	});
-}
-
-
-function childTask(){
-	$tid = (yield getTaskId());
-	while(true){
-		echo "Child task $tid still alive!\n";
+	public function coroutine($max){
+		$tid = yield $this->getCoroutineTaskId(); // <-- here's the syscall!
+		for($i = 1; $i <= $max; ++$i){
+			$this->debug("This is task $tid iteration $i.");
+			yield;
+		}
 		yield;
 	}
-}
 
-function task(){
-	$tid      = (yield getTaskId());
-	$childTid = (yield addTask(childTask()));
-	for($i = 1; $i <= 6; ++$i){
-		echo "Parent task $tid iteration $i.\n";
-		yield;
-		if($i == 3){
-			yield killTask($childTid);
+	public function coroutineHandler($params = []){
+		$task = rand(1, 9);
+		while($task){
+			$tid = $this->addTask($this->coroutine($task));
+			$this->outputMemoryUsage(false, "Parent task $tid .");
 		}
 	}
-}
 
-function childTask1(){
-	$tid = (yield getTaskId());
-	while(true){
-		echo "ChildTask $tid StillAlive!\n";
+	/**
+	 * 任务处理程序
+	 * @param $params
+	 * @return Generator
+	 */
+	public function taskHandler($params){
+		// TODO: Implement taskHandler() method.
+		$this->debug('taskHandler', $params);
 		yield;
 	}
 }
 
-function task1(){
-	$tid      = (yield getTaskId());
-	$childTid = (yield addTask(childTask1()));
-	for($i = 1; $i <= 6; ++$i){
-		echo "ParentTask $tid Iteration $i.\n";
-		yield;
-		if($i == 3){
-			yield killTask($childTid);
-		}
-	}
-}
-
-$scheduler = new Scheduler();
-$scheduler->addTask(\sales\script\sales_info_sync\task());
-$scheduler->addTask(task1());
-$scheduler->run();
+$scheduler = new testCoroutine();
+$scheduler->handleCoroutine();
