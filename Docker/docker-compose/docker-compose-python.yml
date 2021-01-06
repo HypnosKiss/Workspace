@@ -1,0 +1,25 @@
+version: '3'
+
+services:
+  python:
+    container_name: python
+    image: python:latest
+    #       build: ./
+    ports:
+      - "22:22"
+      - "5000:5000"
+    volumes:
+      - ./data/:/www
+    stdin_open: true
+    tty: true
+    privileged: true
+    restart: always
+    entrypoint: ["bash"]
+    #docker run -p 8081:80 -v $(pwd):/var/www/swoft -itd --entrypoint="" --name swoft0 --privileges=true 16675112194/swoft:official bash
+    # pip install Pillow
+    #echo "swoole.use_shortname = 'Off'" >> /usr/local/etc/php/conf.d/docker-php-ext-swoole.ini
+    #entrypoint: ["./bin/SMProxy", "start", "--console"] #./bin/SMProxy start --daemonize
+    #netstat -a -o -n | Select-String -Pattern 2375
+    #netstat -an | findstr 2375
+    #netsh interface ipv4 show excludedportrange protocol=tcp
+    #docker 连接(桥接模式)本地主机需用本地主机ip连接

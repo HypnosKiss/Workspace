@@ -1,0 +1,54 @@
+version: '3'
+
+services:
+  mysql:
+    image: mysql:5.7.28
+    container_name: mysql_5728
+    volumes:
+      - ./data/:/var/lib/mysql
+    environment:
+     MYSQL_ROOT_PASSWORD: 123456
+     MYSQL_DATABASE: sales
+     MYSQL_USER: root
+     MYSQL_PASSWORD: root123456
+    ports:
+      - "3310:3306"
+    stdin_open: true
+    tty: true
+    privileged: true
+    restart: always
+#    entrypoint: ["mysqld"]
+
+
+#netstat -a -o -n | Select-String -Pattern 2375
+#netstat -an | findstr 2375
+#netsh interface ipv4 show excludedportrange protocol=tcp
+#docker 连接(桥接模式)本地主机需用本地主机ip连接
+
+# 修改本地连接账号-置空
+#alter user 'root'@'localhost' identified by '';
+
+# 修改远程账号密码-置空
+#alter user 'root'@'%' identified by '123456';
+#FLUSH PRIVILEGES;
+
+#version: '3'
+#networks:  #定义网路 
+# backend:    
+#  driver: ${NETWORKS_DRIVER}
+#  services:  ### MySQL ################################################  
+#  mysql0:    
+#  build:      
+#  context: ./mysql  #自定义镜像      
+#  args:        - MYSQL_VERSION=${MYSQL_VERSION} #指定版本   
+#   environment:      - MYSQL_DATABASE=${MYSQL_DATABASE}  #默认创建数据库      
+#  - MYSQL_USER=${MYSQL_USER}  #创建用户     
+#   - MYSQL_PASSWORD=${MYSQL_PASSWORD}  #用户密码 
+#       - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD} #root 用户秘密     
+#   - TZ=${WORKSPACE_TIMEZONE}    
+#  volumes:   
+#     - ${DATA_PATH_HOST}/mysql:/var/lib/mysql      
+#  - ${MYSQL_ENTRYPOINT_INITDB}:/docker-entrypoint-initdb.d   
+#   ports:      - "${MYSQL_PORT}:3306"    
+#  networks: 
+#       - backend

@@ -1,0 +1,55 @@
+version: '3'
+
+services:
+  php:
+    container_name: swoole
+    image: phpswoole/swoole
+    //       build: ./
+    ports:
+      - "9000:9000"
+      - "9002:9002"
+      - "9501:9501"
+    volumes:
+      - ./data/:/www
+    stdin_open: true
+    tty: true
+    privileged: true
+    restart: always
+    entrypoint: ["bash"]
+
+    //docker run -p 8081:80 -v $(pwd):/var/www/swoft -itd --entrypoint="" --name swoft0 --privileges=true 16675112194/swoft:official bash
+
+    // echo "include_path = '.;/www;/php/includes;'" >> /usr/local/etc/php/php.ini-production
+    // 格式: sed -i "s/查找字段/替换字段/g" `grep 查找字段 -rl 路径`
+    // perl -p -i -e "s/123/888/g" test1.txt test2.txt
+    // sed -i  's/原字符串/新字符串/g'  package.sh  不带/g 只替换一处
+    // sed -i  's/include_path = '.;/www'/include_path = '.;/www;/php/includes;''  /usr/local/etc/php/php.ini-production
+    //echo "swoole.use_shortname = 'Off'" >> /usr/local/etc/php/conf.d/docker-php-ext-swoole.ini
+
+    //entrypoint: ["./bin/SMProxy", "start", "--console"] //./bin/SMProxy start --daemonize
+    //netstat -a -o -n | Select-String -Pattern 2375
+    //netstat -an | findstr 2375
+    //netsh interface ipv4 show excludedportrange protocol=tcp
+    //docker 连接(桥接模式)本地主机需用本地主机ip连接
+
+    //composer config -g repo.packagist composer https://mirrors.aliyun.com/composer/
+
+    // 取消全局配置
+    //composer config -g --unset repos.packagist
+
+    //composer config -g repo.packagist composer https://packagist.laravel-china.org
+    //composer config -g repo.packagist composer https://packagist.phpcomposer.com
+
+
+    //composer 镜像源
+    //      composer        https://packagist.org
+    //      phpcomposer     https://packagist.phpcomposer.com
+    //      aliyun          https://mirrors.aliyun.com/composer
+    //      tencent         https://mirrors.cloud.tencent.com/composer
+    //      huawei          https://mirrors.huaweicloud.com/repository/php
+    //      laravel-china   https://packagist.laravel-china.org
+    //      cnpkg           https://php.cnpkg.org
+    //      sjtug           https://packagist.mirrors.sjtug.sjtu.edu.cn
+
+    // 安装redis扩展
+    // pecl install -o -f redis && rm -rf /tmp/pear && docker-php-ext-enable redis
