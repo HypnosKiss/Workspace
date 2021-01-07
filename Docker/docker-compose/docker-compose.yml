@@ -1,0 +1,25 @@
+version: '3'
+
+services:
+  php:
+    container_name: sales
+    image: phpswoole/swoole:4.4.23-php7.4
+    ports:
+      - "9500:9500"
+      - "9501:9501"
+      - "9502:9502"
+      - "9503:9503"
+    volumes:
+      - ./sales/:/www
+    working_dir: /www
+    stdin_open: true
+    tty: true
+    privileged: true
+    restart: always
+    entrypoint: ["bash"]
+
+#  echo "include_path = '.;/www;/php/includes;/usr/local/lib/php'" >> /usr/local/etc/php/php.ini-production
+#  格式: sed -i "s/查找字段/替换字段/g" `grep 查找字段 -rl 路径`
+#  perl -p -i -e "s/123/888/g" test1.txt test2.txt
+#  sed -i  's/原字符串/新字符串/g'  package.sh  不带/g 只替换一处
+#  sed -i  's/include_path = '.;/www'/include_path = '.;/www;/php/includes;''  /usr/local/etc/php/php.ini-production
