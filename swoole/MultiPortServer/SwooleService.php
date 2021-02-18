@@ -60,6 +60,7 @@ class SwooleService extends SwooleBase {
 	 */
 	public function onWorkerStart(Swoole\WebSocket\Server $server, $worker_id){
 		$this->debug('worker_id:', $worker_id, 'start.');
+//        var_dump(get_included_files()); //此数组中的文件表示进程启动前就加载了，所以无法reload
 		require_once 'launch.inc.php';
 		if(!$server->taskworker && $worker_id === 0){
 			// var_dump($this->server);
@@ -249,6 +250,8 @@ $config = [
 	'package_length_type'      => PACKAGE_LENGTH_TYPE, //长度值的类型，接受一个字符参数，与 PHP 的 pack 函数一致。 see php pack() 无符号、网络字节序、4 字节
 	'package_length_offset'    => PACKAGE_LENGTH_OFFSET,
 	'package_body_offset'      => PACKAGE_BODY_OFFSET,
+	'max_wait_time'            => 60,//设置 Worker 进程收到停止服务通知后最大等待时间【默认值：3】
+    'reload_async'             => true,//设置异步重启开关。【默认值：true】
 ];
 
 ## 开启swoole服务 TCP telnet 127.0.0.1 9501  UDP netcat -u 127.0.0.1 9502
