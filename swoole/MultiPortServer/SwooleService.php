@@ -60,6 +60,7 @@ class SwooleService extends SwooleBase {
 	 */
 	public function onWorkerStart(Swoole\WebSocket\Server $server, $worker_id){
 		$this->debug('worker_id:', $worker_id, 'start.');
+		require_once 'launch.inc.php';
 		if(!$server->taskworker && $worker_id === 0){
 			// var_dump($this->server);
 			// $server->tick(100, function(){
@@ -142,8 +143,9 @@ class SwooleService extends SwooleBase {
 				$this->websocket_server->task(json_encode(['type' => 'task', 'content' => 'hello']));
 			});
 			// $response->header("Content-Type", "text/plain");
-			// $response->end('<h1>Request received</h1>');
 			$response->write('<h1>Request received0</h1>');
+			$response->write('<h2>hello my name is swoole http server</h2>');
+			// $response->end('<h1>Request received</h1>');
 			$this->debug("Request:", $request, 'Response:', $response);
 		}
 	}
@@ -215,7 +217,7 @@ $file_path = sys_get_temp_dir().'/swoole/';
 $xml_str   = '';
 $row       = 1;
 if(!file_exists($file_path) && !mkdir($file_path, 0777, true) && !is_dir($file_path)){
-	throw new \Exception(sprintf('Directory "%s" was not created', $file_path));
+	throw new RuntimeException(sprintf('Directory "%s" was not created', $file_path));
 }
 $config = [
 	'daemonize'                => false, //是否作为守护进程
