@@ -6,8 +6,10 @@ IFS=$'\n'
 # log 文件
 log_dir='/tmp/sh'
 log_file="$log_dir/screen_job_sh.log"
+
 # 脚本配置文件
 config_file="/wwwdata/sh/screen_job.conf"
+
 # 执行目录
 exec_dir='~'
 
@@ -16,13 +18,15 @@ touch $log_file
 
 # return the current date time
 timestamp(){
-    echo $(date "+%Y-%m-%d %H:%M:%S")
+  echo $(date "+%Y-%m-%d %H:%M:%S")
 }
 
-# 颜色字
+# 颜色字 -彩色输出 \e[1;32m:将字体颜色设为绿色，\e[0m:将颜色重置
+# 字体颜色包括：0=重置，30=黑色，31=红色，32=绿色，33=黄色，34=蓝色，35=洋红，36=青色，37=白色
+# 背景颜色包括：0=重置，40=黑色，41=红色，42=绿色，43=黄色，44=蓝色，45=洋红，46=青色，47=白色
 msg(){
 	local msg=$1
-	echo -e "\033[1;36m $msg \033[0m"
+	echo -e "\033[1;32m $msg \033[0m"
 }
 
 # 保存日志
@@ -95,7 +99,7 @@ startScreen(){
 
 # 用法
 usage(){
-    echo $"Usage: $0 {help|status|start|stop|restart|stopJob|restartJob}"
+    echo $"Usage: $0 {help|status|start|stop|restart|stopJob|restartJob} [screenName]"
     exit 1
 }
 
@@ -120,6 +124,17 @@ batchHandle(){
     command=${line##*-}
     screen_name=${line%-*}
     command=$(echo $command | sed 's/\r//')
+
+    # 空行、空的 screenName、 空的命令
+    if [  -z "${line}" -o -z "${screen_name}" -o -z "${command}" ]; then
+        outputLog "Invalid arguments action: ${action} line : ${line}"
+        continue;
+    fi
+    # 有指定 screen 只处理指定的 screenName
+    if [ "${screenName}" -a "${screenName}_" != "${screen_name}_" ]; then
+      outputLog "Skip the current screen: ${screen_name} Specify the execution screen: ${screenName} "
+      continue;
+    fi
 
     outputLog "action: $action screen name: $screen_name command: $command"
 
@@ -185,7 +200,7 @@ main() {
   # 根据控制指令决定做什么 {help|status|start|stop|restart|stopJob|restartJob}
   case "$action" in
     start | stop | restart | stopJob | restartJob)
-      batchHandle $action
+      batchHandle $action $screenName
       ;;
     status)
       screen -ls
@@ -207,11 +222,12 @@ main() {
   fi
 }
 
-# 位置参数
+# 位置参数 第一个参数为 action 第二个参数为 screenName
 action=$1
+screenName=$2
 
-# 只允许一个位置参数
-[ $# -ne 1 ] && usage
+# 最少需要一个参数 -lt 小于 -gt 大于 -ne 不相等 -eq 相等 -o 或运算 -a 与运算
+[ $# -lt 1 -o $# -gt 2 ] && usage
 
 main
 
