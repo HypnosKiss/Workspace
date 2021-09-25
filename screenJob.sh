@@ -102,15 +102,15 @@ usage(){
 # 查看操作说明
 menu() {
 cat <<-EOF
-################################################
-#       help: help                             #
-#       status: status                         #
-#       start: start                           #
-#       stop: stop                             #
-#       restart: restart                       #
-#       stopJob: stopJob                       #
-#       restartJob: restartJob                 #
-################################################
+###############################################################################
+#       help: See the instructions                                            #
+#       status: View screen Tasks                                             #
+#       start: launch screen And perform the task                             #
+#       stop: Interrupt task first, then exit screen                          #
+#       restart: To perform first stop Operation to perform start Operation   #
+#       stopJob: Interrupt tasks                                              #
+#       restartJob: Interrupt tasks, and then start the task                  #
+###############################################################################
 EOF
 }
 
