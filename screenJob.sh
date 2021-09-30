@@ -121,8 +121,8 @@ EOF
 batchHandle(){
   for line in $(cat $config_file)
   do
-    command=${line##*-}
-    screen_name=${line%-*}
+    command=${line##*;}
+    screen_name=${line%;*}
     command=$(echo $command | sed 's/\r//')
 
     # 空行、空的 screenName、 空的命令
@@ -145,7 +145,7 @@ batchHandle(){
        quit='false';
     fi
 
-    if [ ! $pid ]; then
+    if [[ ! $pid ]]; then
 
       #根据控制指令决定做什么
       case "$action" in
