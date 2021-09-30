@@ -152,6 +152,7 @@ batchHandle(){
         start)
           outputLog "The task is about to begin"
           startScreen $screen_name
+          stopJob $screen_name
           addJob $screen_name $command
           outputLog "The task has already been begun"
           ;;
@@ -161,6 +162,7 @@ batchHandle(){
         restart | restartJob)
           outputLog "The task does not exist and is about to begin"
           startScreen $screen_name
+          stopJob $screen_name
           addJob $screen_name $command
           outputLog "The task does not exist and has already been begun"
           ;;
