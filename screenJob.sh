@@ -125,9 +125,14 @@ batchHandle(){
     screen_name=${line%;*}
     command=$(echo $command | sed 's/\r//')
 
+    # 跳过注释
+    if [[ ${line} =~ ^# ]];then
+      outputLog "Skip comment action: ${action} line : ${line}"
+      continue;
+    fi
     # 空行、空的 screenName、 空的命令
     if [  -z "${line}" -o -z "${screen_name}" -o -z "${command}" ]; then
-        outputLog "Invalid arguments action: ${action} line : ${line}"
+        outputLog "Invalid Line action: ${action} line : ${line}"
         continue;
     fi
     # 有指定 screen 只处理指定的 screenName
